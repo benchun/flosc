@@ -240,8 +240,13 @@ public class Bytes {
      */
     public static byte[] copy(byte[] b, int pos, int length) {
         byte[] z = new byte[length];
-        System.arraycopy(b, pos, z, 0, length);
-        return z;
+        try {
+            System.arraycopy(b, pos, z, 0, length);
+	} catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Oops: " + e.getMessage());
+            z = java.nio.ByteBuffer.allocate(4).putInt(3).array();
+        }
+	return z;
     }
 
     /**
